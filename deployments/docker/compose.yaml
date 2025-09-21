@@ -26,8 +26,9 @@ services:
       - "3102:3002"
       - "3103:3003"
     volumes:
-      - /d/Project_Intensive/Project_1/tea-ordering-platform/infra/aerospike/aerospike.conf:/etc/aerospike/aerospike.conf
-      - aerospike_data:/opt/aerospike/data
+      - ../../infra/aerospike/aerospike_data:/opt/aerospike/data
+      - ../../infra/aerospike:/etc/aerospike # Thêm dòng này để mount thư mục config
+    command: ["--config-file", "/etc/aerospike/aerospike.conf"] # Chỉ định file cấu hình
 
   aerospike-tools:
     image: aerospike/aerospike-tools:latest
@@ -35,8 +36,6 @@ services:
     depends_on:
       - aerospike
     entrypoint: [ "sleep", "infinity" ]
-    volumes:
-      - /d/Project_Intensive/Project_1/tea-ordering-platform/infra/aerospike/aerospike.conf:/etc/aerospike/aerospike.conf
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
@@ -63,5 +62,5 @@ services:
 
 volumes:
   kafka_data:
-  aerospike_data:
+  # aerospike_data:
   es_data:
